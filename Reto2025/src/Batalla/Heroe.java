@@ -10,9 +10,11 @@ public class Heroe {
 	private static int AtaquesAcertados=0;
 
 	private static final String[] NOMBRES_ATAQUES = { "Ligero", "Fuerte", "Mágico" };
-	private static final int[] PROB_ACIERTO = { 90, 60, 40 };
-	private static final int[] DANIO_MIN = { 10, 25, 40 };
-	private static final int[] DANIO_MAX = { 20, 35, 50 };
+	private static final int[][] DATOS_ATAQUES = {
+			 	{90, 10, 20},  
+			    {60, 25, 35},	// Probabilidad, daño mínimo, daño máximo
+			    {40, 40, 50}
+			};
 
 	public Heroe(String nombre) {
 		
@@ -32,6 +34,8 @@ public class Heroe {
 	}
 
 	public int getPuntosVida() {
+		if(puntosVida<0)
+			puntosVida=0;
 		return puntosVida;
 	}
 
@@ -56,8 +60,8 @@ public class Heroe {
 	}
 
 	public int Atacar(int i) {
-
-		return calcularAtaque(PROB_ACIERTO[i - 1], DANIO_MIN[i - i], DANIO_MAX[i - 1]);
+		int index=0;
+		return calcularAtaque(DATOS_ATAQUES[i - 1][index++], DATOS_ATAQUES[i - 1][index++], DATOS_ATAQUES[i - 1][index]);
 		
 	}
 
@@ -87,10 +91,8 @@ public class Heroe {
 	}
 
 	public boolean estaVivo() {
-		if (puntosVida <= 0)
-			return false;
-		else
-			return true;
+		
+		return puntosVida>0;
 	}
 
 }

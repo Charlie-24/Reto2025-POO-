@@ -4,26 +4,30 @@ import java.util.Random;
 
 public class Dragon {
 	
-	
-	
+	private String nombre_fase;
 	private String nombre;
 	private int puntosVida;
 	private static int AtaquesFallados;
 	private static int AtaquesAcertados;
-	private int fase;
+	private static int fase;
 	
 	private static final String[] NOMBRES_FASES = {"Joven", "Adulto", "Anciano"};
+	private static final String[] NOMBRES_DRAGONES = {"Drakthor","Ignavar","Velaryn","Velaryn","Kaelzara"};
 	private static final int[] VIDA_MIN = { 100, 120, 140 };
 	private static final int[] VIDA_MAX = { 120, 140, 160 };
-	private static final int[] PROB_ACIERTO = { 70, 75, 80 };
-	private static final int[] DANIO_MIN = { 15, 20, 30 };
-	private static final int[] DANIO_MAX = { 30, 35, 40 };
 	
+	private static final int[][] DATOS_ATAQUES = {
+						{70,15,30},
+						{75,20,35},  //Probabilidad, Daño minimo, Daño maximo
+						{80,30,40}
+	};
 	
-	public Dragon() {
+	public Dragon(int fase) {
 		Random r=new Random();
-		this.fase=0;
-		this.nombre =NOMBRES_FASES[fase];
+		int nombreAleatorio=r.nextInt(NOMBRES_DRAGONES.length+1);
+		this.fase=fase;
+		this.nombre=NOMBRES_DRAGONES[nombreAleatorio];
+		this.nombre_fase =NOMBRES_FASES[fase];
 		this.puntosVida=r.nextInt(VIDA_MIN[fase],VIDA_MAX[fase]+1);
 		
 		AtaquesFallados=0;
@@ -31,8 +35,8 @@ public class Dragon {
 	}
 	
 	
-	public static String getNombresFases(int i) {
-		return NOMBRES_FASES[i];
+	public static String getNombresFases() {
+		return NOMBRES_FASES[fase];
 	}
 
 
@@ -48,8 +52,7 @@ public class Dragon {
 		this.fase=fase;
 		this.nombre =NOMBRES_FASES[fase];
 		this.puntosVida=r.nextInt(VIDA_MIN[fase],VIDA_MAX[fase]+1);
-		
-		
+
 	}
 
 
@@ -79,9 +82,8 @@ public class Dragon {
 	}
 	
 	public int Atacar() {
-		
-		return calcularAtaque(PROB_ACIERTO[fase],DANIO_MIN[fase],DANIO_MAX[fase]);
-	
+		int index=0;
+		return calcularAtaque(DATOS_ATAQUES[fase][index++],DATOS_ATAQUES[fase][index++],DATOS_ATAQUES[fase][index]);
 	}
 	
 	private static int calcularAtaque(int probabilidad, int HPmin, int HPmax) {
@@ -110,10 +112,7 @@ public class Dragon {
 	}
 	public boolean estaVivo() {
 		
-		if(puntosVida<=0)
-			return false;
-		else
-			return true;
+		return puntosVida>0;
 		
 	}
 
